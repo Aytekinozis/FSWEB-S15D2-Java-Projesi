@@ -1,6 +1,7 @@
 package com.workintech.task1;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class TaskData {
@@ -26,8 +27,8 @@ public class TaskData {
         return carolsTasks;
     }
 
-    public Set<Task> getTasks(String name) {
-        switch (name) {
+    public Set<Task> getTasks(String asignee) {
+        switch (asignee) {
             case "ann":
                 return annsTasks;
             case "bob":
@@ -35,15 +36,46 @@ public class TaskData {
             case "carol":
                 return carolsTasks;
             case "all":
-                Set<Task> allTasks = new HashSet<>();
-                allTasks.addAll(annsTasks);
-                allTasks.addAll(bobsTasks);
-                allTasks.addAll(carolsTasks);
-                return allTasks;
+                System.out.println("all run");
+                return getUnion(bobsTasks, annsTasks, carolsTasks);
             default:
                 System.out.println("Wrong name!");
                 return null;
         }
 
+    }
+    public Set<Task> getUnion(Set<Task>... sets) {
+        HashSet<Task> total = new LinkedHashSet<>();
+
+        for (Set<Task> taskSet : sets) {
+            total.addAll(taskSet);
+            System.out.println(taskSet);
+        }
+        System.out.println("total: " + total);
+        return total;
+    }
+    public void addTask(Task task) {
+        switch (task.getAssignee()){
+            case "ann":
+                annsTasks.add(task);
+                break;
+            case "bob":
+                bobsTasks.add(task);
+                break;
+            case "carol":
+                carolsTasks.add(task);
+                break;
+            default:
+                System.out.println("Invalid asignee: " + task.getAssignee());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "TaskData{" +
+                "annsTasks=" + annsTasks +
+                ", bobsTasks=" + bobsTasks +
+                ", carolsTasks=" + carolsTasks +
+                '}';
     }
 }
